@@ -1,50 +1,52 @@
-name: Build APK
+name: Build M&H APK
 
 on:
   push:
-    branches: [ master ]
+    branches: [master, main]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-    
-    - name: Install Capacitor
-      run: |
-        npm init -y
-        npm install @capacitor/core @capacitor/cli @capacitor/android
-    
-    - name: Create Capacitor config
-      run: |
-        cat > capacitor.config.json << 'EOF'
-        {
-          "appId": "com.alhashemi.mhapp",
-          "appName": "M&H App",
-          "webDir": ".",
-          "server": {
-            "androidScheme": "https"
-          }
-        }
-        EOF
-    
-    - name: Add Android platform
-      run: npx cap add android
-    
-    - name: Build Android APK
-      run: |
-        cd android
-        ./gradlew assembleDebug
-    
-    - name: Upload APK
-      uses: actions/upload-artifact@v3
-      with:
-        name: app-debug
-        path: android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Initialize package.json
+        run: |
+          npm init -y
+          npm install @capacitor/core @capacitor/cli @capacitor/android
+
+      - name: Initialize Capacitor
+        run: |
+          npx cap init "M&H App" "com.mh.app" --web-dir "." --npm-client npm
+
+      - name: Add Android platform
+        run: npx cap add android
+
+      - name: Sync web assets
+        run: npx cap sync
+
+      - name: Build Debug APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: M&H-App-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
