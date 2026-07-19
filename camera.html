@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الكاميرا - M&H</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(180deg, #fff0f3 0%, #ffe4e9 20%, #ffd1dc 40%, #ffb7c5 60%, #ff9eb5 80%, #ff85a2 100%);
+    min-height: 100vh;
+    color: #8b3a5a;
+    overflow-x: hidden;
+}
+.bg-accessories {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Ctext x='20' y='50' font-size='30'%3E💄%3C/text%3E%3Ctext x='80' y='80' font-size='25'%3E💍%3C/text%3E%3Ctext x='150' y='60' font-size='35'%3E👜%3C/text%3E%3Ctext x='220' y='90' font-size='28'%3E🎀%3C/text%3E%3Ctext x='300' y='70' font-size='32'%3E💎%3C/text%3E%3Ctext x='50' y='140' font-size='30'%3E🕶️%3C/text%3E%3Ctext x='120' y='160' font-size='26'%3E👠%3C/text%3E%3Ctext x='200' y='150' font-size='35'%3E✨%3C/text%3E%3Ctext x='280' y='170' font-size='28'%3E🌸%3C/text%3E%3Ctext x='340' y='130' font-size='32'%3E💅%3C/text%3E%3C/svg%3E") repeat-x bottom;
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 0;
+}
+.container { max-width: 420px; margin: 0 auto; padding: 15px; position: relative; z-index: 1; }
+.header { text-align: center; padding: 20px 0; position: relative; }
+.header h1 { font-size: 22px; color: #ffb3c6; text-shadow: 0 2px 10px rgba(255,179,198,0.3); }
+.header .crown { font-size: 32px; margin-bottom: 5px; display: block; }
+.camera-section {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    padding: 25px;
+    margin: 15px 0;
+    border: 1px solid rgba(255,179,198,0.35);
+    text-align: center;
+}
+.camera-icon { font-size: 60px; margin-bottom: 15px; display: block; }
+.camera-section h2 { color: #ffb3c6; font-size: 20px; margin-bottom: 8px; }
+.camera-section p { color: rgba(139,58,90,0.6); font-size: 13px; margin-bottom: 20px; }
+.btn-group { display: flex; flex-direction: column; gap: 12px; }
+.btn-camera, .btn-gallery {
+    padding: 16px 25px;
+    border: none;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.btn-camera {
+    background: linear-gradient(135deg, #ff6b9d, #c44569);
+    color: white;
+    box-shadow: 0 8px 25px rgba(196,69,105,0.4);
+}
+.btn-gallery {
+    background: rgba(255,255,255,0.65);
+    color: #ffb3c6;
+    border: 2px dashed rgba(255,179,198,0.5);
+}
+.btn-camera:active, .btn-gallery:active { transform: scale(0.97); }
+.preview-section { display: none; margin-top: 20px; }
+.preview-section.active { display: block; }
+.preview-img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 20px;
+    border: 3px solid rgba(255,179,198,0.3);
+    margin-bottom: 15px;
+}
+.btn-analyze {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(58,123,213,0.4);
+    margin-bottom: 10px;
+}
+.btn-cancel {
+    width: 100%;
+    padding: 14px;
+    background: rgba(255,255,255,0.6);
+    color: rgba(139,58,90,0.7);
+    border: none;
+    border-radius: 16px;
+    font-size: 15px;
+    cursor: pointer;
+}
+.results-section {
+    display: none;
+    margin-top: 20px;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    padding: 25px;
+    border: 1px solid rgba(255,179,198,0.35);
+}
+.results-section.active { display: block; }
+.results-title { color: #ffb3c6; font-size: 18px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+.results-content { color: rgba(139,58,90,0.9); font-size: 14px; line-height: 2; text-align: right; white-space: pre-line; }
+.results-content strong { color: #ffb3c6; }
+.result-actions { display: flex; gap: 10px; margin-top: 20px; }
+.result-actions button { flex: 1; padding: 12px; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; }
+.btn-save { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
+.btn-share { background: rgba(255,255,255,0.55); color: #ffb3c6; }
+.chat-section {
+    display: none;
+    margin-top: 20px;
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    padding: 20px;
+    border: 1px solid rgba(255,179,198,0.3);
+}
+.chat-section.active { display: block; }
+.chat-title { color: #ffb3c6; font-size: 16px; margin-bottom: 15px; text-align: center; }
+.chat-messages { max-height: 300px; overflow-y: auto; margin-bottom: 15px; padding: 10px; }
+.chat-message { margin-bottom: 12px; padding: 12px 15px; border-radius: 18px; max-width: 85%; font-size: 13px; line-height: 1.6; }
+.chat-message.user { background: linear-gradient(135deg, #ff6b9d, #c44569); margin-right: auto; margin-left: 0; border-bottom-right-radius: 4px; }
+.chat-message.ai { background: rgba(255,255,255,0.65); margin-left: auto; margin-right: 0; border-bottom-left-radius: 4px; color: rgba(139,58,90,0.9); }
+.chat-input-area { display: flex; gap: 10px; }
+.chat-input { flex: 1; padding: 14px 18px; border: none; border-radius: 20px; background: rgba(255,255,255,0.6); color: #8b3a5a; font-size: 14px; outline: none; }
+.chat-input::placeholder { color: rgba(139,58,90,0.4); }
+.chat-send { width: 50px; height: 50px; border: none; border-radius: 50%; background: linear-gradient(135deg, #ff6b9d, #c44569); color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.loading { display: none; text-align: center; padding: 30px; }
+.loading.active { display: block; }
+.loading-spinner { width: 50px; height: 50px; border: 4px solid rgba(255,179,198,0.2); border-top-color: #ffb3c6; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading p { color: #ffb3c6; font-size: 14px; }
+.nav-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(20px); display: flex; justify-content: space-around; padding: 10px 0 20px; border-top: 1px solid rgba(255,179,198,0.3); z-index: 100; }
+.nav-item { text-align: center; color: rgba(139,58,90,0.5); text-decoration: none; font-size: 11px; transition: all 0.3s; }
+.nav-item.active { color: #ffb3c6; }
+.nav-item span { font-size: 24px; display: block; margin-bottom: 3px; }
+#fileInput, #cameraInput { display: none; }
+</style>
+</head>
+<body>
+<div class="bg-accessories"></div>
+<div class="container">
+    <div class="header">
+        <span class="crown">👑</span>
+        <h1>لمسة أناقة M&H</h1>
+    </div>
+    <div class="camera-section">
+        <span class="camera-icon">📸</span>
+        <h2>صوّري قطعتك الآن</h2>
+        <p>بلوزة، فستان، تنورة، بنطلون، جاكيت، حذاء...</p>
+        <div class="btn-group">
+            <button class="btn-camera" onclick="openCamera()"><span>📷</span> فتح الكاميرا</button>
+            <button class="btn-gallery" onclick="openGallery()"><span>🖼️</span> ارفعي من المعرض</button>
+        </div>
+        <input type="file" id="cameraInput" accept="image/*" capture="camera">
+        <input type="file" id="fileInput" accept="image/*">
+    </div>
+    <div class="preview-section" id="previewSection">
+        <img class="preview-img" id="previewImg" src="" alt="معاينة">
+        <button class="btn-analyze" onclick="analyzeCurrentImage()">🔮 تحليل بالذكاء الاصطناعي</button>
+        <button class="btn-cancel" onclick="cancelImage()">❌ إلغاء</button>
+    </div>
+    <div class="loading" id="loadingSection">
+        <div class="loading-spinner"></div>
+        <p>جاري التحليل بالذكاء الاصطناعي...</p>
+    </div>
+    <div class="results-section" id="resultsSection">
+        <div class="results-title">✨ نتائج التحليل</div>
+        <div class="results-content" id="resultsContent"></div>
+        <div class="result-actions">
+            <button class="btn-save" onclick="saveCurrentResult()">💾 حفظ</button>
+            <button class="btn-share" onclick="shareCurrentResult()">📤 مشاركة</button>
+        </div>
+        <button class="btn-analyze" style="margin-top:15px;background:linear-gradient(135deg,#ff6b9d,#c44569);" onclick="openChat()">💬 تحدثي مع الخبير</button>
+    </div>
+    <div class="chat-section" id="chatSection">
+        <div class="chat-title">💬 دردشة مع خبير الأزياء</div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" id="chatInput" placeholder="اسألي عن الألوان، التنسيق، الإكسسوارات...">
+            <button class="chat-send" onclick="sendChatMessage()">➤</button>
+        </div>
+    </div>
+</div>
+<nav class="nav-bar">
+    <a href="home.html" class="nav-item"><span>🏠</span>الرئيسية</a>
+    <a href="camera.html" class="nav-item active"><span>📷</span>تصوير</a>
+    <a href="favorites.html" class="nav-item"><span>❤️</span>المفضلة</a>
+    <a href="profile.html" class="nav-item"><span>👤</span>حسابي</a>
+</nav>
+<script src="gemini.js"></script>
+<script>
+let currentImageBase64 = "";
+let currentImageMime = "";
+let currentAnalysisResult = "";
+let chatContext = "";
+function openCamera() { document.getElementById('cameraInput').click(); }
+function openGallery() { document.getElementById('fileInput').click(); }
+document.getElementById('cameraInput').addEventListener('change', function(e) { handleImage(e.target.files[0]); });
+document.getElementById('fileInput').addEventListener('change', function(e) { handleImage(e.target.files[0]); });
+async function handleImage(file) {
+    if (!file) return;
+    currentImageMime = file.type || "image/jpeg";
+    currentImageBase64 = await fileToBase64(file);
+    document.getElementById('previewImg').src = "data:" + currentImageMime + ";base64," + currentImageBase64;
+    document.getElementById('previewSection').classList.add('active');
+    document.getElementById('resultsSection').classList.remove('active');
+    document.getElementById('chatSection').classList.remove('active');
+    window.scrollTo({ top: document.getElementById('previewSection').offsetTop - 20, behavior: 'smooth' });
+}
+function cancelImage() {
+    document.getElementById('previewSection').classList.remove('active');
+    document.getElementById('resultsSection').classList.remove('active');
+    document.getElementById('chatSection').classList.remove('active');
+    currentImageBase64 = "";
+    currentImageMime = "";
+}
+async function analyzeCurrentImage() {
+    if (!currentImageBase64) return;
+    document.getElementById('loadingSection').classList.add('active');
+    document.getElementById('previewSection').classList.remove('active');
+    const result = await analyzeImage(currentImageBase64, currentImageMime);
+    currentAnalysisResult = result;
+    chatContext = result;
+    document.getElementById('loadingSection').classList.remove('active');
+    document.getElementById('resultsContent').innerHTML = formatResult(result);
+    document.getElementById('resultsSection').classList.add('active');
+    window.scrollTo({ top: document.getElementById('resultsSection').offsetTop - 20, behavior: 'smooth' });
+}
+function formatResult(text) { return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>'); }
+function saveCurrentResult() {
+    if (!currentAnalysisResult) return;
+    saveToFavorites({ type: 'analysis', content: currentAnalysisResult, image: currentImageBase64, mime: currentImageMime });
+    alert('✅ تم الحفظ في المفضلة!');
+}
+function shareCurrentResult() { if (!currentAnalysisResult) return; shareResults(currentAnalysisResult); }
+function openChat() {
+    document.getElementById('chatSection').classList.add('active');
+    if (document.getElementById('chatMessages').children.length === 0) {
+        addChatMessage('ai', 'مرحباً! أنا خبير الأزياء في M&H. سألتِ عن التحليل؟ أو هل لديكِ سؤال آخر؟ 💕');
+    }
+    window.scrollTo({ top: document.getElementById('chatSection').offsetTop - 20, behavior: 'smooth' });
+}
+async function sendChatMessage() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+    if (!message) return;
+    addChatMessage('user', message);
+    input.value = '';
+    const reply = await chatWithAI(message, chatContext);
+    addChatMessage('ai', reply);
+}
+function addChatMessage(sender, text) {
+    const container = document.getElementById('chatMessages');
+    const msg = document.createElement('div');
+    msg.className = 'chat-message ' + sender;
+    msg.textContent = text;
+    container.appendChild(msg);
+    container.scrollTop = container.scrollHeight;
+}
+document.getElementById('chatInput').addEventListener('keypress', function(e) { if (e.key === 'Enter') sendChatMessage(); });
+</script>
+</body>
+</html>

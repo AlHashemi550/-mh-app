@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: sans-serif; background: #fdfdfd; margin: 0; padding-bottom: 90px; }
+        .hero { background: linear-gradient(180deg, #e0dcfc 0%, #ffffff 100%); padding: 40px 20px; text-align: center; border-radius: 0 0 40px 40px; }
+        .grid-main { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
+        .card-big { background: white; padding: 20px; border-radius: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; border: 1px solid #f0f0f0; }
+        .store-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
+        .store-card { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 3px 10px rgba(0,0,0,0.03); text-align: center; border: 1px solid #f9f9f9; }
+        .nav-bar { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; z-index: 1000; }
+        .nav-item { text-align: center; color: #888; font-size: 12px; cursor: pointer; }
+        .nav-item.active { color: #5b21b6; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h2>اهلاً بكم في</h2>
+        <h1 style="color: #2d1b69;">متجركم الشامل</h1>
+        <p>👑 مزايا برو</p>
+    </div>
+    <div class="grid-main">
+        <div class="card-big">🚗 تسجيل سائق</div>
+        <div class="card-big">🛍️ تسجيل متجر</div>
+    </div>
+    <div style="padding: 0 20px; font-weight: bold;">المتاجر النشطة ✅</div>
+    <div class="store-grid">
+        <div class="store-card">أزياء المدينة<br><small style="color: #888;">ملابس</small></div>
+        <div class="store-card">سوبر ماركت الضياء<br><small style="color: #888;">سوبر ماركت</small></div>
+    </div>
+    <div class="nav-bar">
+        <div class="nav-item active"><i class="fas fa-home fa-lg"></i><br>الرئيسية</div>
+        <div class="nav-item"><i class="fas fa-store fa-lg"></i><br>السوق</div>
+        <div class="nav-item"><i class="fas fa-tags fa-lg"></i><br>العروض</div>
+        <div class="nav-item"><i class="fas fa-user fa-lg"></i><br>حسابي</div>
+    </div>
+</body>
+</html>
+
